@@ -80,3 +80,5 @@ gem 'table_print', '~> 1.5', '>= 1.5.6'
 gem 'faker', '~> 1.6', '>= 1.6.6'
 gem 'simple_form'
 gem 'bootstrap-form', '~> 3.0'
+gem 'pg_search'
+

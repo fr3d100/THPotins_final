@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_08_122945) do
+ActiveRecord::Schema.define(version: 2019_02_08_151500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,10 @@ ActiveRecord::Schema.define(version: 2019_02_08_122945) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "conversations", force: :cascade do |t|
+    t.string "title"
+  end
+
   create_table "gossips", force: :cascade do |t|
     t.string "title"
     t.text "content"
@@ -50,6 +54,13 @@ ActiveRecord::Schema.define(version: 2019_02_08_122945) do
     t.index ["tag_id"], name: "index_join_table_gossip_tags_on_tag_id"
   end
 
+  create_table "join_user_conversations", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "conversation_id"
+    t.index ["conversation_id"], name: "index_join_user_conversations_on_conversation_id"
+    t.index ["user_id"], name: "index_join_user_conversations_on_user_id"
+  end
+
   create_table "likes", force: :cascade do |t|
     t.bigint "gossip_id"
     t.bigint "user_id"
@@ -64,6 +75,8 @@ ActiveRecord::Schema.define(version: 2019_02_08_122945) do
     t.bigint "sender_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "conversation_id"
+    t.index ["conversation_id"], name: "index_private_messages_on_conversation_id"
     t.index ["sender_id"], name: "index_private_messages_on_sender_id"
   end
 

@@ -1,6 +1,9 @@
 class User < ApplicationRecord
 	
-	attr_accessor :remember_token
+  include PgSearch
+  pg_search_scope :search_by_full_name, against: [:first_name, :last_name]
+	
+  attr_accessor :remember_token
 
 	has_secure_password
 	
@@ -9,14 +12,16 @@ class User < ApplicationRecord
 	has_many :comments
 	has_many :likes
 	has_many :sent_messages, foreign_key: 'sender_id', class_name: "PrivateMessage"
-	has_many :recipients
-	has_many :private_messages, through: :recipients
+	# has_many :recipients
+	# has_many :private_messages, through: :recipients
+  has_many :join_user_conversations
+  has_many :conversations, through: :join_user_conversations
 
-	validates :password, presence: true, length: { minimum: 6 }
-	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-	validates :email, presence: true, length: { maximum: 255 },
-                    format: { with: VALID_EMAIL_REGEX },
-                    uniqueness: { case_sensitive: false }
+	# validates :password, presence: true, length: { minimum: 6 }
+	# VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+	# validates :email, presence: true, length: { maximum: 255 },
+ #                    format: { with: VALID_EMAIL_REGEX },
+ #                    uniqueness: { case_sensitive: false }
 
 
   class << self

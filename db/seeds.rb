@@ -16,9 +16,10 @@ Gossip.destroy_all
 Tag.destroy_all
 JoinTableGossipTag.destroy_all
 PrivateMessage.destroy_all
-JoinTablePmRecipient.destroy_all
 Comment.destroy_all
 Like.destroy_all
+Conversation.destroy_all
+JoinUserConversation.destroy_all
 
 
 #Création de 10 villes
@@ -29,7 +30,7 @@ puts "10 villes ont été crées"
 
 #Création de 10 users
 10.times do
-	u = User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, description: "J'ai plein de Gossip à partager sur tout le monde, attention, le prochain est peut-être bien toi!", email: Faker::Internet.email, password: "azerty", age: Faker::Number.between(7, 77).to_i, city: City.order("RANDOM()").first)
+	u = User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, description: "J'ai plein de Gossip à partager sur tout le monde, attention, le prochain est peut-être bien toi!", email: Faker::Internet.email, password: "azerty", age: Faker::Number.between(7, 77).to_i, city: City.order("RANDOM()").first, password: "azerty")
 end 
 puts "10 utilisateurs ont été créés"
 
@@ -54,22 +55,6 @@ Gossip.all.each do |gossip|
 end
 puts "2 tags ont été affectés à chaque Gossip"
 
-# On créé des messages envoyés par des users
-10.times do
-	u = User.order("RANDOM()").first
-	PrivateMessage.create(content: "Message privé envoyé par #{u.first_name}", sender: u)
-end 
-puts "10 messages ont été envoyés par des utilisateurs"
-
-#On rajoute 2 destinataire à chaque message envoyé
-PrivateMessage.all.each do |pm|
-	2.times do 
-		u = User.order("RANDOM()").first
-		JoinTablePmRecipient.create(private_message: pm, user: u)
-	end
-end
-puts "2 destinataires ont été rajoutés à chaque message envoyé"
-
 
 # Création de 10 commentaires par gossip
 Gossip.all.each do |gossip|
@@ -85,6 +70,26 @@ puts "10 commentaires ont été ajoutés à chaque potin"
 end
 puts "100 likes ont été créés"
 
-#Création d'un gossip "Anonymous"
-User.create(first_name: "Ano", last_name: "Nymous", description: "Je reste anonyme parce que j'ai plein de Gossip à partager sur tout le monde, attention, le prochain est peut-être bien toi!", email: "anonymous@anonyme.fr",  password: "azerty", age: Faker::Number.between(7, 77).to_i, city: City.order("RANDOM()").first)
+
+####################
+# CHAT FEATURE
+####################
+
+# On créé 3 conversations
+3.times do
+	Conversation.create(title: Faker::Hipster.word)
+end
+puts "3 conversations ont été créés"
+
+# On va placer chaque user dans 1 conversation aléatoirement
+User.all.each do |usr|
+	JoinUserConversation.create(user: usr, conversation: Conversation.order("RANDOM()").first)
+end
+
+
+#On va créer ajouter 5 messages par conversation
+Conversation.all.each do |conv|
+	PrivateMessage.create(conversation: conv, sender: conv.users.order("RANDOM()").first, content: "Bla bla bla")
+end
+puts "100 messages ont été envoyés !"
 

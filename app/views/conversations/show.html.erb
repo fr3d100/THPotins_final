@@ -1,0 +1,40 @@
+<!-- CONTENT -->
+<!-- Jumbottron -->
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4"><%= @conversation.title%>
+		</h1>
+		<p>
+			<% @conversation.users.each do |user|%>
+				<%= user.first_name %> <%= user.last_name %>,
+			<% end %>
+		</p>
+		<%= link_to conversations_path do %>
+		<p>
+			<i class="fas fa-arrow-left"></i> Revenir à toutes mes conversations
+		</p>
+		<%end%>
+	</div>
+</div>
+
+
+<div class="container m-3 d-flex justify-content-right">
+	<div class="row">
+				<% @conversation.private_messages.reverse_order.each do |pm| %>
+			<div class="col-sm-12 d-flex justify-left m-3">
+				<div class="card">
+				  <div class="card-body">
+				    <blockquote class="blockquote mb-0">
+				      <p><%=pm.content %></p>
+				      <footer class="blockquote-footer">envoyé le <%=pm.created_at.strftime("%d/%m/%Y") %> par 
+				      	<%= link_to user_path(pm.sender.id) do  %>
+				      	<cite title="Source Title"><%=pm.sender.first_name %> <%=pm.sender.last_name %></cite>
+				      	<% end%>
+				      </footer>
+				    </blockquote>
+				  </div>
+				</div>
+			</div>
+				<%end%>
+		</div>
+</div>

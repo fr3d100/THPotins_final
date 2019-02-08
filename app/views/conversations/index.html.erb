@@ -1,0 +1,38 @@
+<!-- CONTENT -->
+<!-- Jumbottron -->
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Mes conversations  <strong>(<%= current_user.conversations.size%>) </strong>
+		</h1>
+				<%= link_to new_conversation_path do %>
+					<p><i class="fas fa-plus"></i> Nouvelle conversation</p>
+				<%end%>
+  </div>
+</div>
+
+<!-- All user conversations -->
+<div class="container d-flex justify-content-center">
+	<div class="row">
+		<div class="col-sm-12 d-flex justify-content-center m-3">
+			<h1>Mes conversations </h1>
+		</div>
+
+		<div class="col-sm-12 d-flex justify-content-center m-3">
+			<div class="list-group" style="width:50rem">
+				<% current_user.conversations.each do |conv|  %>
+					<%= link_to conversation_path(conv.id), class: "list-group-item list-group-item-action" do %>
+				    <div class="d-flex w-100 justify-content-between" >
+				      <h5 class="mb-1"><i class="fas fa-comments"></i> <%=conv.title%></h5>
+				    </div>
+				    <small>
+							<% conv.users.each do |user|%>
+								<%= user.first_name %> <%= user.last_name %>,
+							<% end %>
+				    </small>
+				  <% end %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
