@@ -1,0 +1,44 @@
+<!-- CONTENT -->
+<!-- Jumbottron -->
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4"><i class="fas fa-city"></i> <%=@city.name %>, <small style="font-size:0.5em"> <%=@city.zip_code %></small></h1>
+  </div>
+</div>
+
+<!-- All gossips -->
+<div class="container d-flex justify-content-center">
+	<div class="row">
+		<div class="col-sm-12 d-flex justify-content-center m-3">
+			<h1>Tous les gossips de la ville de  <%= @city.name %>  </h1>
+		</div>
+
+		<div class="col-sm-12 d-flex justify-content-center">
+			<div class="list-group" style="width:50rem">
+				<% @city.users.all.each do |user|  %>
+				<%= link_to user_path(user.id), class: "" do %>
+					<h6>Gossips de <%= user.first_name%> <%= user.last_name%> (<%= user.gossips.size%>)</h6>
+				<%end %>
+					<% user.gossips.each do |gossip|  %>
+						<%= link_to gossip_path(gossip.id), class: "list-group-item list-group-item-action" do %>
+				    <div class="d-flex w-100 justify-content-between" >
+				      <h5 class="mb-1"><i class="fas fa-book-dead"></i> <%=gossip.title%></h5>
+				      <small>par <%= gossip.user.first_name %> <%= gossip.user.last_name %>, <%= gossip.likes.size %> like(s), <%= gossip.comments.size %> commentaire(s)</small>
+				    </div>
+				    <small>Découvrir plus</small>
+				  <% end %>
+				  <div class="m-3">
+				  	<% if Like.find_by(gossip: gossip.id, user: current_user.id) == nil %>
+							<%= form_tag(gossip_likes_path(gossip.id), method: "post") do %>
+								<%= submit_tag("J'aime", :class => "btn btn-outline-primary btn-sm") %>
+							<% end %>
+						<%else%>
+							<%= link_to "J'aime", gossip_like_path(gossip.id, Like.find_by(gossip: gossip.id, user: current_user.id).id), method: :delete, class: "btn btn-primary btn-sm" %>
+						<%end%>
+					</div>
+					<% end %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

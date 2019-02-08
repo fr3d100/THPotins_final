@@ -1,0 +1,119 @@
+<!-- CONTENT -->
+<!-- Jumbottron -->
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4"><%=@gossip.title%> </h1>
+    <p class="lead">Gossip #<%=@gossip.id%> </p>
+  </div>
+</div>
+
+<div class="container  d-flex justify-content-center">
+	<div class="row">
+		<div class="col-sm-12 d-flex justify-content-center m-3">
+			<div class="card">
+			  <div class="card-header">
+			    <%=@gossip.title%>
+			  </div>
+			  <div class="card-body">
+			    <blockquote class="blockquote mb-0">
+			      <p><%=@gossip.content%></p>
+			      <footer class="blockquote-footer">Balancé par <%= link_to user_path(@gossip.user.id) do%><cite title="Gossip authoe"><%=@gossip.user.first_name%> <%=@gossip.user.last_name%></cite><% end %></footer>
+			    </blockquote>
+			  </div>
+			  <div class="card-footer text-muted d-inline-flex justify-content-around">
+					<div>
+						<% if Like.find_by(gossip: @gossip.id, user: current_user.id) == nil %>
+							<%= form_tag(gossip_likes_path(@gossip.id), method: "post") do %>
+								<%= submit_tag("J'aime", :class => "btn btn-outline-primary btn-sm") %>
+							<% end %>
+						<%else%>
+				 				<%= link_to "J'aime", gossip_like_path(@gossip.id, Like.find_by(gossip: @gossip.id, user: current_user.id).id), method: :delete, class: "btn btn-primary btn-sm" %>
+						<%end%>
+					</div>
+			    <div>
+			    	<span class="badge badge-secondary"><%= @gossip.likes.size %> likes </span>
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container  d-flex justify-content-center">
+	<div class="row">
+		<div class="col-sm-12 d-flex justify-content-center justify-content-between m-3">
+			 <div>
+			 	<% if @gossip.user == current_user %>
+			 		<%= link_to "Editer ce gossip", edit_gossip_path(@gossip.id), class: "btn btn-outline-primary" %> 
+			 	<% end %>
+			 </div>
+			 <div>
+			 	<% if @gossip.user == current_user %>
+			 		<%= link_to "Supprimer", gossip_path(@gossip.id), method: :delete, class: "btn btn-danger" %>
+				<% end %>
+				</div>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="container d-flex justify-content-center flex-column  col-sm-12">
+		<div class="col-sm-12 d-flex justify-content-center m-3">
+			<h1><i class="fas fa-comments"></i> Ajouter un commentaire</h1>
+		</div>
+		<div class="col-sm-12 d-flex justify-content-center m-3">
+			<%= form_tag(gossip_comments_path(@gossip.id, @comment.id), method: "post", :style => "width:500px") do %>
+			<div class="form-group">
+				 <%= label_tag(:comment_content, "Mon commentaire:") %>
+				 <%= text_area_tag(:comment_content, "", :class => 'form-control') %>
+			</div>
+			<input type="hidden" name="gossip_id" value="<%= @gossip.id%>">
+
+			<div class="col-sm-12 d-flex justify-content-center  m-3">
+				<%= submit_tag("Poster", :class => "btn btn-success") %>
+			</div>
+		</div>
+
+	<% end %>
+</div>
+
+
+
+
+<div class="container m-3 d-flex justify-content-right">
+	<div class="row">
+				<% @gossip.comments.reverse_order.each do |comment| %>
+			<div class="col-sm-12 d-flex justify-left m-3">
+				<div class="card">
+				  <div class="card-header d-flex justify-content-between">
+				    <div>
+				    	Commentaire #<%=comment.id %>
+				    </div>
+						<div class="d-inline-flex ">
+							<div class="mr-2">
+								<% if comment.user == current_user %>
+								<%= link_to "Editer", edit_gossip_comment_path(@gossip.id, comment.id), class: "btn btn-outline-primary btn-sm"  %>
+								<% end %>
+							</div>
+							<div class="mr-2">
+								<% if comment.user == current_user %>
+									<a href="<%=gossip_comment_path(@gossip.id, comment.id)%>" class="btn btn-danger btn-sm" data-confirm="Alors, tu n'assumes pas ce commentaire, tu veux le delete ? " data-method="DELETE"> Supprimer</a>
+								<% end %>
+							</div>
+						</div>
+				  </div>
+				  <div class="card-body">
+				    <blockquote class="blockquote mb-0">
+				      <p><%=comment.content %></p>
+				      <footer class="blockquote-footer">commenté le <%=comment.created_at.strftime("%d/%m/%Y") %> par 
+				      	<%= link_to user_path(comment.user.id) do  %>
+				      	<cite title="Source Title"><%=comment.user.first_name %> <%=comment.user.last_name %></cite>
+				      	<% end%>
+				      </footer>
+				    </blockquote>
+				  </div>
+				</div>
+			</div>
+				<%end%>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,53 @@
+<!-- Jumbottron -->
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Créer un compte </strong>
+</h1>
+    <p class="lead">Tu décrouvriras dès lors des potins croustillants sur tous les mousaillons de la session 7 de THP</p>
+  </div>
+</div>
+
+<div class="container m-3 d-flex justify-content-center col-sm-12">
+	<%= form_tag("/users", method: "post", :style => "width:500px") do %>
+		
+		<div class="form-group">
+			 <%= label_tag(:first_name, "Ton prénom :") %>
+			 <%= text_field_tag(:first_name, "", :class => 'form-control') %>
+		</div>
+		<div class="form-group">
+			 <%= label_tag(:last_name, "Ton nom :") %>
+			 <%= text_field_tag(:last_name, "", :class => 'form-control') %>
+		</div>
+		<div class="form-group">
+			 <%= label_tag(:age, "Ton âge :") %>
+			 <%= text_field_tag(:age, "", :class => 'form-control') %>
+		</div>
+		<div>
+		<%= label_tag(:city, "Ta ville :") %>
+		<%= select_tag(:city, options_for_select(@cities.collect{ |c| [c.name, c.id] }), :class => 'form-control') %>
+		</div>
+		<div class="form-group">
+			 <%= label_tag(:email, "Ton email :") %>
+			 <%= email_field_tag(:email, "", :class => 'form-control') %>
+		</div>
+		<div class="form-group">
+			<%= label_tag(:password, "Ton mot de passe :") %>
+			<%= password_field_tag(:password, "", :class => 'form-control') %>
+		</div>
+		<div class="form-group">
+			<%= label_tag(:password_confirm, "Confirme ton mot de passe :") %>
+			<%= password_field_tag(:password_confirm, "", :class => 'form-control') %>
+		</div>
+
+		<div class="col-sm-12 d-flex justify-content-center  m-3">
+			<%= submit_tag("Créer un compte", :class => "btn btn-outline-primary") %>
+		</div>
+
+	<% end %>
+</div>
+
+<div class="container m-3 d-flex justify-content-center col-sm-12">
+	<div>
+	<%= link_to "Vous avez déjà un compte ? Connectez vous", new_session_path %>
+	</div>
+</div>

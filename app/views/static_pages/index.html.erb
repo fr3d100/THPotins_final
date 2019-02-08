@@ -1,0 +1,21 @@
+  	<!-- CONTENT -->
+		<div class="row m-3">
+			<div class="col-sm-12">
+				<h1>Voici le mur des potins les plus secrets de THP Session 7 !</h1>
+			</div>
+			<div class="row m-3">
+				<% @gossips.all.each do |gossip|  %>
+				<div class="col-lg-3 col-sm-12">
+						<div class="card">
+						  <div class="card-body">
+						    <h5 class="card-title"><i class="fas fa-book-dead"></i> Gossip #<%=gossip.id%></h5>
+						    <h6 class="card-subtitle mb-2 text-muted"><%=gossip.title%></h6>
+						    <i class="fas fa-angle-right"></i> <%= link_to "Voir plus", show_gossip_path(gossip.id), class: "card-link" %>
+						  </div>
+						</div>
+						<br>
+					</div>
+				<% end %>
+			</div>
+
+		</div>

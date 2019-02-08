@@ -1,0 +1,24 @@
+<!-- CONTENT -->
+<!-- Jumbottron -->
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Editer le commentaire #<%=@comment.id%> </h1>
+    <p class="lead">Commenté par <%=@comment.user.first_name%> à propose du Gossip #<%=@comment.gossip.id%> </p>
+  </div>
+</div>
+
+<div class="container m-3 d-flex justify-content-center col-sm-12">
+	
+	<%= form_for [@gossip, @comment] do |f| %>
+		<div class="form-group">
+			<label>Commentaire</label>
+			<%= f.text_area :content, class: "form-control"%>
+		</div>
+
+		<div class="col-sm-12 d-flex justify-content-center  m-3">
+			<%= f.submit "Mettre à jour le commentaire", class: "btn btn-primary"%>
+		</div>
+	<% end %>
+</div>
+
+

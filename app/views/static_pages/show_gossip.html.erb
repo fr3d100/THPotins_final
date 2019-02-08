@@ -1,0 +1,20 @@
+  	<!-- CONTENT -->
+		<div class="row m-3">
+			<div class="col-sm-12">
+				<h1>Voici le détail du super potin #<%=@gossip.id%> </h1>
+			</div>
+			<div class="row m-3">
+					<div class="card">
+					  <div class="card-body">
+					    <h5 class="card-title"><%=@gossip.title%> <i class="far fa-comment"></i> </h5>
+				    	<blockquote class="blockquote mb-0">
+				      	<p><%= @gossip.content %></p>
+				      	<footer class="blockquote-footer">Créé le <%= @gossip.created_at %> <cite title="Source Title">par <i class="fas fa-user-secret"></i> <%= link_to @gossip.user.first_name, show_user_path(@gossip.user.id)%></cite></footer>
+				    	</blockquote>
+				  	</div>
+					 </div>
+					</div>
+			</div>
+			<div class="row m-3">
+				<%= link_to "Revenir à la liste des potins", root_path, class: "badge badge-primary" %>
+			</div>

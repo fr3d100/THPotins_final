@@ -1,0 +1,71 @@
+<!-- CONTENT -->
+<!-- Jumbottron -->
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4"><i class="fas fa-user-secret"></i> <%=@user.first_name %> <%=@user.last_name %></h1>
+    <p class="lead"><%=@user.description %></p>
+  </div>
+</div>
+
+<div class="container d-flex justify-content-center">
+	<div class="row">
+		<div class="col-sm-12 d-flex justify-content-center m-3">
+			<h1>Les infos de <%=@user.first_name %> <%=@user.last_name %></h1>
+		</div>
+		<div class="col-sm-12 d-flex justify-content-center">
+			<table class="table table-bordered">
+			  <thead>
+			    <tr>
+			      <th scope="col">First name</th>
+			      <th scope="col">Last name</th>
+			      <th scope="col">Email address</th>
+			      <th scope="col">Age</th>
+			      <th scope="col">City</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <td><%=@user.first_name %></td>
+			      <td><%=@user.last_name %></td>
+			      <td><%=@user.email %></td>
+			      <td><%=@user.age %> ans</td>
+			      <td><%=link_to @user.city.name, city_path(@user.city.id) %></td>
+			    </tr>
+			    <tr>
+			  </tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- All potins -->
+<div class="container d-flex justify-content-center">
+	<div class="row">
+		<div class="col-sm-12 d-flex justify-content-center m-3">
+			<h1>Tous les potins de <%=@user.first_name %>  </h1>
+		</div>
+
+		<div class="col-sm-12 d-flex justify-content-center">
+			<div class="list-group" style="width:50rem">
+				<% @user.gossips.all.each do |gossip|  %>
+						<%= link_to gossip_path(gossip.id), class: "list-group-item list-group-item-action" do %>
+				    <div class="d-flex w-100 justify-content-between" >
+				      <h5 class="mb-1"><i class="fas fa-book-dead"></i> <%=gossip.title%></h5>
+				      <small>par <%= gossip.user.first_name %> <%= gossip.user.last_name %>, <%= gossip.likes.size %> like(s), <%= gossip.comments.size %> commentaire(s)</small>
+				    </div>
+				    <small>Découvrir plus</small>
+				  <% end %>
+				  <div class="m-3">
+				  	<% if Like.find_by(gossip: gossip.id, user: current_user.id) == nil %>
+							<%= form_tag(gossip_likes_path(gossip.id), method: "post") do %>
+								<%= submit_tag("J'aime", :class => "btn btn-outline-primary btn-sm") %>
+							<% end %>
+						<%else%>
+							<%= link_to "J'aime", gossip_like_path(gossip.id, Like.find_by(gossip: gossip.id, user: current_user.id).id), method: :delete, class: "btn btn-primary btn-sm" %>
+						<%end%>
+					</div>
+					<% end %>
+			</div>
+		</div>
+	</div>
+</div>
