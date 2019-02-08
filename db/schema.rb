@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_07_192046) do
+ActiveRecord::Schema.define(version: 2019_02_08_114716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,15 +50,6 @@ ActiveRecord::Schema.define(version: 2019_02_07_192046) do
     t.index ["tag_id"], name: "index_join_table_gossip_tags_on_tag_id"
   end
 
-  create_table "join_table_pm_recipients", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "private_message_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["private_message_id"], name: "index_join_table_pm_recipients_on_private_message_id"
-    t.index ["user_id"], name: "index_join_table_pm_recipients_on_user_id"
-  end
-
   create_table "likes", force: :cascade do |t|
     t.bigint "gossip_id"
     t.bigint "user_id"
@@ -74,6 +65,15 @@ ActiveRecord::Schema.define(version: 2019_02_07_192046) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sender_id"], name: "index_private_messages_on_sender_id"
+  end
+
+  create_table "recipients", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "private_message_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["private_message_id"], name: "index_recipients_on_private_message_id"
+    t.index ["user_id"], name: "index_recipients_on_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
