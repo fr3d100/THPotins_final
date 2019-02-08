@@ -32,4 +32,24 @@ class ConversationsController < ApplicationController
 
 	end
 
+	def destroy
+		@conversation = Conversation.find(params['id'])
+		#Suppression de toutes les lignes de JoinUserconversation où la conversation apparait
+		@conversation.join_user_conversations.each do |juc|
+			juc.destroy
+		end
+		# Suppresion de tous les messages de la conversation
+		@conversation.private_messages.each do |pm|
+			pm.destroy
+		end
+		#supression de la conversation
+		if @conversation.destroy
+			flash[:success] = "Conversation supprimée"
+			redirect_to conversations_path
+		else
+			flash[:danger] = "La conversation n'a pas été supprimée"
+			redirect_to conversations_path
+		end
+	end
+
 end

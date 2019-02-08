@@ -19,7 +19,9 @@ Rails.application.routes.draw do
 
   resources :contacts, only: [:index]
 
-  resources :conversations, only: [:index, :show, :new, :create, :destroy]
+  resources :conversations, only: [:index, :show, :new, :create, :destroy] do
+    resources :private_messages
+  end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

@@ -9,6 +9,9 @@
 				<%= user.first_name %> <%= user.last_name %>,
 			<% end %>
 		</p>
+		<p>
+			<%= link_to "Supprimer cette conversation", conversation_path(@conversation.id), method: :delete, class: "text-danger" %>
+		</p>
 		<%= link_to conversations_path do %>
 		<p>
 			<i class="fas fa-arrow-left"></i> Revenir à toutes mes conversations
@@ -22,7 +25,9 @@
 	<div class="row">
 				<% @conversation.private_messages.reverse_order.each do |pm| %>
 			<div class="col-sm-12 d-flex justify-left m-3">
-				<div class="card">
+				<% if pm.sender == current_user%><div class="card bg-success">
+				<% else %> <div class="card">
+				<% end %>
 				  <div class="card-body">
 				    <blockquote class="blockquote mb-0">
 				      <p><%=pm.content %></p>
@@ -37,4 +42,25 @@
 			</div>
 				<%end%>
 		</div>
+</div>
+
+<hr>
+<div class="container d-flex justify-content-center flex-column  col-sm-12">
+		<div class="col-sm-12 d-flex justify-content-center m-3">
+			<h1><i class="fas fa-comments"></i> Nouveau message</h1>
+		</div>
+		<div class="col-sm-12 d-flex justify-content-center m-3">
+			<%= form_tag(conversation_private_messages_path(@conversation.id), method: "post", :style => "width:500px") do %>
+			<div class="form-group">
+				 <%= label_tag(:pm_content, "Mon message:") %>
+				 <%= text_area_tag(:pm_content, "", :class => 'form-control') %>
+			</div>
+			<input type="hidden" name="conversation_id" value="<%= @conversation.id %>">
+
+			<div class="col-sm-12 d-flex justify-content-center  m-3">
+				<%= submit_tag("Envoyer", :class => "btn btn-success") %>
+			</div>
+		</div>
+
+	<% end %>
 </div>
